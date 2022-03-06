@@ -2,6 +2,8 @@
 Repositorio para trabajar en el proyecto de ingeniería de software
 
 
-node
+```
+ npm add styled.components framer-motion
+```
 
-
+https://formik.org/
