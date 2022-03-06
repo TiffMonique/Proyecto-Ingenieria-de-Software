@@ -21,10 +21,10 @@ const phoneRegExp = /^\d{7,14}$/; // 7 a 14 numeros.
 const validationSchema = yup.object({
   nombre:yup.string().min(3, "Ingrese un nombre real").required("El nombre es requerido"),
   apellido:yup.string().min(3, "Ingrese un apellido real").required("El apellido es requerido"),
-  correo:yup.string().email("Por favor ingrese un correo válida").required("El correo es requerido"),
+  correo:yup.string().email("Por favor ingrese un correo válido").required("El correo es requerido"),
   telefono: yup.string().matches(phoneRegExp, "Numero de Telefóno inválido"),
-  direccion:yup.string().max(100, "Ingrese una dirección mas corta"),
-  pass: yup.string().matches(PASSWORD_REGEX, "Por favor ingrese una contraseña fuerte").required(),
+  direccion:yup.string().max(100, "Ingrese una dirección mas corta").min(10, "Ingrese una dirección mas larga"),
+  pass: yup.string().matches(PASSWORD_REGEX, "Por favor ingrese una contraseña fuerte").required("La contraseña es requerida"),
   passConfirmation: yup.string().when("pass", {
     is: val => (val && val.length > 0 ? true: false),
     then : yup.string().oneOf([yup.ref("password")], "Las contraseñas no coninciden")

@@ -22,6 +22,7 @@ function App() {
 
             <div className='banner' >
                 <video
+                    id="videoBG" poster="./img/poster.png"
                     autoPlay
                     loop
                     muted
