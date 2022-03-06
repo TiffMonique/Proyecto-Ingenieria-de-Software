@@ -13,7 +13,7 @@ export const FormContainer = styled.form`
   width: 100%;
   display: flex;
   flex-direction: column;
-  box-shadow: 0px 0px 2.5px rgba(15, 15, 15, 0.19);
+  //box-shadow: 0px 0px 2.5px rgba(15, 15, 15, 0.19);
 `;
 
 
@@ -78,3 +78,17 @@ export const SubmitButton = styled.button`
     filter: brightness(1.05);
   }
 `;
+
+export const FieldContainer = styled.div`
+  width: 100%;
+  display :flex;
+  flex-direction: column;
+
+`;
+
+export const FieldError = styled.span`
+  color: #b32e2e;
+  font-size: 11px;
+  min-height: 18px;
+`
+

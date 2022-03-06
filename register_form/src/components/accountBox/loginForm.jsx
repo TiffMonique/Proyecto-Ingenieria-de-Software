@@ -16,8 +16,8 @@ export function LoginForm(props) {
   return (
     <BoxContainer>
       <FormContainer>
-        <Input type="email" placeholder="Email" />
-        <Input type="password" placeholder="Password" />
+        <Input type="email"  name="correo" id="correo" placeholder="Email" />
+        <Input type="password" name="pass" id="pass" placeholder="Password" />
       </FormContainer>
       <Marginer direction="vertical" margin={10} />
       <MutedLink href="#">¿Olvidaste tu contraseña?</MutedLink>

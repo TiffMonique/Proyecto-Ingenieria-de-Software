@@ -15,6 +15,7 @@ const BoxContainer = styled.div`
   box-shadow: 0 0 2px rgba(15, 15, 15, 0.28);
   position: relative;
   overflow: hidden;
+  
 `;
 
 const TopContainer = styled.div`
@@ -95,7 +96,7 @@ const expandingTransition = {
 
 export function AccountBox(props) {
   const [isExpanded, setExpanded] = useState(false);
-  const [active, setActive] = useState("signin");
+  const [active, setActive] = useState("iniciar_sesion");
 
   const playExpandingAnimation = () => {
     setExpanded(true);
@@ -107,14 +108,14 @@ export function AccountBox(props) {
   const switchToSignup = () => {
     playExpandingAnimation();
     setTimeout(() => {
-      setActive("signup");
+      setActive("registrarse");
     }, 400);
   };
 
   const switchToSignin = () => {
     playExpandingAnimation();
     setTimeout(() => {
-      setActive("signin");
+      setActive("iniciar_sesion");
     }, 400);
   };
 
@@ -130,13 +131,13 @@ export function AccountBox(props) {
             variants={backdropVariants}
             transition={expandingTransition}
           />
-          {active === "signin" && (
+          {active === "iniciar_sesion" && (
             <HeaderContainer>
               <HeaderText>¡Bienvenido!</HeaderText>
               <SmallText>Iniciar Sesión</SmallText>
             </HeaderContainer>
           )}
-          {active === "signup" && (
+          {active === "registrarse" && (
             <HeaderContainer>
               <HeaderText>Crear</HeaderText>
               <HeaderText>Cuenta</HeaderText>
@@ -145,8 +146,8 @@ export function AccountBox(props) {
           )}
         </TopContainer>
         <InnerContainer>
-          {active === "signin" && <LoginForm />}
-          {active === "signup" && <SignupForm />}
+          {active === "iniciar_sesion" && <LoginForm />}
+          {active === "registrarse" && <SignupForm />}
         </InnerContainer>
       </BoxContainer>
     </AccountContext.Provider>
