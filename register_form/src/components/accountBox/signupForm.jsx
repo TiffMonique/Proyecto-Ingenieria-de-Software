@@ -15,7 +15,9 @@ import { AccountContext } from "./accountContext";
 import * as yup from "yup";
 //import axios from "axios";
 
-const PASSWORD_REGEX= /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
+/*La contraseña debe tener al entre 8 y 16 caracteres,
+al menos un dígito, al menos una minúscula y al menos una mayúscula.*/
+const PASSWORD_REGEX= /^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/;
 const phoneRegExp = /^\d{7,14}$/; // 7 a 14 numeros.
 
 const validationSchema = yup.object({
@@ -27,7 +29,7 @@ const validationSchema = yup.object({
   pass: yup.string().matches(PASSWORD_REGEX, "Por favor ingrese una contraseña fuerte").required("La contraseña es requerida"),
   passConfirmation: yup.string().when("pass", {
     is: val => (val && val.length > 0 ? true: false),
-    then : yup.string().oneOf([yup.ref("password")], "Las contraseñas no coninciden")
+    then : yup.string().oneOf([yup.ref("pass")], "Las contraseñas no coninciden")
   }),
 
 });
