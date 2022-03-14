@@ -1,7 +1,7 @@
 import {  useFormik } from "formik";
-import React, { useContext } from "react";
+import React, { useContext} from "react";
 import {
-  BoldLink,
+  BoldLink, //
   BoxContainer,
   FieldContainer,
   FieldError,
@@ -18,29 +18,38 @@ import * as yup from "yup";
 /*La contraseña debe tener al entre 8 y 16 caracteres,
 al menos un dígito, al menos una minúscula y al menos una mayúscula.*/
 const PASSWORD_REGEX= /^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/;
-const phoneRegExp = /^\d{7,14}$/; // 7 a 14 numeros.
+const phoneRegExp =/^\d{7,14}$/;
+///^\+[5][0][4]\s(?:9|8|3)[1-9]{7}$/; // Expresion regular para numeros hondureños
+//^\d{7,14}$/; // 7 a 14 numeros.
 
-const validationSchema = yup.object({
-  nombre:yup.string().min(3, "Ingrese un nombre real").required("El nombre es requerido"),
+
+//Yup es la librería para validar los campos de Formik
+const validationSchema = yup.object({ // Un esquema de Yup es un objeto inmutable responsable de validar un objeto en este caso un formulario
+  nombre:yup.string().min(3, "Ingrese un nombre real").required("El nombre es requerido"), //min es una funcion de yup que indica que la cantidad minina a ingresar es 3
   apellido:yup.string().min(3, "Ingrese un apellido real").required("El apellido es requerido"),
   correo:yup.string().email("Por favor ingrese un correo válido").required("El correo es requerido"),
-  telefono: yup.string().matches(phoneRegExp, "Numero de Telefóno inválido"),
-  direccion:yup.string().max(100, "Ingrese una dirección mas corta").min(10, "Ingrese una dirección mas larga"),
+  telefono: yup.string().matches(phoneRegExp, "Numero de Telefóno inválido"), //Aqui la funcion matches permite validar si el numero ingresado corresponde a lo indicado en la expresion regular
+  direccion:yup.string().max(100, "Ingrese una dirección mas corta").min(10, "Ingrese una dirección mas larga"), //La funcio max indica que en el primer paramentro recibido numero maximo de caracteres a ingresar 
   pass: yup.string().matches(PASSWORD_REGEX, "Por favor ingrese una contraseña fuerte").required("La contraseña es requerida"),
   passConfirmation: yup.string().when("pass", {
     is: val => (val && val.length > 0 ? true: false),
-    then : yup.string().oneOf([yup.ref("pass")], "Las contraseñas no coninciden")
+    then : yup.string().oneOf([yup.ref("pass")], "Las contraseñas no coninciden") //validacion de que la confirmacion de la contraseña sea igual a la contra
   }),
 
 });
 
+//Funcion para mandar los datos del form
 export function SignupForm(props) {
   const { switchToSignin } = useContext(AccountContext);
   const onSubmit = (values) => {
-    alert(JSON.stringify(values));
+    alert(JSON.stringify(values)); //Aqui se puede cambiar dependiendo el alert que queramos poner
 };
+
+
+
   
-const formik = useFormik( {initialValues: {nombre: "", apellido: "", correo: "", telefono: "", direccion: "", pass: "", passConfirmation: ""},
+// formik es una libreria que ayuda a validar campos
+const formik = useFormik({initialValues: {nombre: "", apellido: "", correo: "", telefono: "", direccion: "", pass: "", passConfirmation: ""},
   validateOnBlur: true,
   onSubmit,
   validationSchema: validationSchema,
@@ -52,6 +61,8 @@ console.log("Error: ", formik.errors);
     <BoxContainer>
       <FormContainer action="http://localhost:4000/api/tienda/crear" method="post">
         <FieldContainer>
+          {/* onChange para sincronizar el valor del campo */}
+          {/* onBlur para sincronizar la validación del campo */}
           <Input icon="user" type="text" name="nombre" id="nombre" placeholder="Nombre" value={formik.values.nombre} onChange={formik.handleChange} onBlur={formik.handleBlur}/>
           <FieldError>{formik.touched.nombre && formik.errors.nombre ? formik.errors.nombre: ""}</FieldError>
         </FieldContainer>
@@ -70,7 +81,7 @@ console.log("Error: ", formik.errors);
           <Input type="text" name="telefono" id="telefono" placeholder="Telefóno" value={formik.values.telefono} onChange={formik.handleChange} onBlur={formik.handleBlur}/>
           <FieldError>{formik.touched.telefono && formik.errors.telefono ? formik.errors.telefono: ""}</FieldError>
         </FieldContainer>
-        
+
         <FieldContainer>
           <Input type="texto" name="direccion" id="direccion" placeholder="Dirección" value={formik.values.direccion} onChange={formik.handleChange} onBlur={formik.handleBlur}/>
           <FieldError>{formik.touched.direccion && formik.errors.direccion ? formik.errors.direccion: ""}</FieldError>
@@ -93,7 +104,7 @@ console.log("Error: ", formik.errors);
       
       <MutedLink href="#">
       ¿Ya tienes una cuenta?
-        <BoldLink href="#" onClick={switchToSignin}>
+        <BoldLink href="#" onClick={switchToSignin}> {/*Al dar click redirecciona al login */}
         
         Iniciar sesión
         </BoldLink>

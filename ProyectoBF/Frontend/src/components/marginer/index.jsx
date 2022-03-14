@@ -1,3 +1,5 @@
+//Este componente nos permirte dar margen
+
 import React from "react";
 import styled from "styled-components";
 

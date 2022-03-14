@@ -1,23 +1,25 @@
-const mysql = require('mysql');
-const { promisify } = require('util');
-const { database } = require('./keys');
+const mysql = require('mysql'); // para la conexion a la base de datos
+const { promisify } = require('util'); //para poder usar promesas
+const { database } = require('./keys'); // la configuración guardada
 
+// Creando el objeto para la conexión
 const pool = mysql.createPool(database);
 
+// intentando la conexión
 pool.getConnection((err, connection) => {
-    if(err) {
-        if(err.code === 'PROTOCOL_CONNECTION_LOST') {
+    if (err) {
+        if (err.code === 'PROTOCOL_CONNECTION_LOST') {
             console.error('La conexion con la base de datos fue cerrada');
         }
-        if(err.code === 'ER_CON_COUNT_ERROR'){
+        if (err.code === 'ER_CON_COUNT_ERROR') {
             console.error('La base de datos tiene demasiadas conexiones');
         }
-        if(err.code === 'ECONREFUSED') {
+        if (err.code === 'ECONREFUSED') {
             console.error('La conexion fue rechazada');
         }
     }
-
-    if(connection) connection.release();
+    //aqí se establece la conexión real
+    if (connection) connection.release();
     console.log('Base de datos conectada');
     return;
 });

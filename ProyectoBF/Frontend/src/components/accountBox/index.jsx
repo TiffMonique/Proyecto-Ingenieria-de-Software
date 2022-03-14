@@ -94,6 +94,7 @@ const expandingTransition = {
   stiffness: 30,
 };
 
+//Funcion es para la animacion del formulario
 export function AccountBox(props) {
   const [isExpanded, setExpanded] = useState(false);
   const [active, setActive] = useState("iniciar_sesion");
