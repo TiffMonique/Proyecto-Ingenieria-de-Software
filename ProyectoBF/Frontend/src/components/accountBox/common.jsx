@@ -19,7 +19,7 @@ export const FormContainer = styled.form`
 
 export const MutedLink = styled.a`
   font-size: 11px;
-  color: rgba(200, 200, 200, 0.8);
+  color: rgba(100, 100, 100, 0.5);
   font-weight: 500;
   text-decoration: none;
 `;
@@ -43,7 +43,7 @@ export const Input = styled.input`
   font-size: 12px;
 
   &::placeholder {
-    color: rgba(200, 200, 200, 1);
+    color: rgba(100, 100, 100, 0.6);
   }
 
   &:not(:last-of-type) {

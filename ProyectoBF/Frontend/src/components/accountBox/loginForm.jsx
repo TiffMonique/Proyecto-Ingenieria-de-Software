@@ -27,12 +27,11 @@ const validationSchema = yup.object({
 export function LoginForm(props) {
   //Comunica los componentes para luego  pasar de login al registro
   const { switchToSignup } = useContext(AccountContext);
-  const [success, setSuccess] =useState(null);
-  const [error, setError] = useState(null);
+  const { switchRecoverPassword } = useContext(AccountContext);
+  const [setSuccess] =useState(null);
+  const [ setError] = useState(null);
 
   //controlador del formulario se activa cuando se envia el formulario
-  
-
   const onSubmit = async (values) => {
     const { correo, pass } = values;
     console.log(values);
@@ -91,7 +90,7 @@ export function LoginForm(props) {
         </FieldContainer>
 
 
-      <MutedLink href="#">¿Olvidaste tu contraseña?</MutedLink>
+      <MutedLink href="#" onClick={switchRecoverPassword}>¿Olvidaste tu contraseña?</MutedLink>
       <Marginer direction="vertical" margin="1.6em" />
       {/*Si los campos estan llenos se inicia seccion con el boton de lo contrario el boton esta deshabilitado */}
       <SubmitButton type="submit" disabled={!formik.isValid}>Iniciar sesión</SubmitButton>

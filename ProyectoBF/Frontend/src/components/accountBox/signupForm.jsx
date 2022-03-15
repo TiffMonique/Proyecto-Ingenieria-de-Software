@@ -39,14 +39,6 @@ const validationSchema = yup.object({ // Un esquema de Yup es un objeto inmutabl
 
 });
 
-//Funcion para mandar los datos del form
-/*export function SignupForm(props) {
-  const { switchToSignin } = useContext(AccountContext);
-  const onSubmit = (values) => {
-    alert(JSON.stringify(values));
-    console("Hola"); //Aqui se puede cambiar dependiendo el alert que queramos poner
-};
-*/
 export function SignupForm(props) {
   const { switchToSignin } = useContext(AccountContext);
   const [ success,setSuccess] = useState(null);

@@ -4,6 +4,7 @@ import { LoginForm } from "./loginForm";
 import { motion } from "framer-motion";
 import { AccountContext } from "./accountContext";
 import { SignupForm } from "./signupForm";
+import { RecoverPassword } from "./recoverPasswordForm";
 
 const BoxContainer = styled.div`
   width: 280px;
@@ -113,6 +114,7 @@ export function AccountBox(props) {
     }, 400);
   };
 
+
   const switchToSignin = () => {
     playExpandingAnimation();
     setTimeout(() => {
@@ -120,7 +122,14 @@ export function AccountBox(props) {
     }, 400);
   };
 
-  const contextValue = { switchToSignup, switchToSignin };
+  const switchRecoverPassword = () => {
+    playExpandingAnimation();
+    setTimeout(() => {
+      setActive("recuperar_contra");
+    }, 400);
+  };
+
+  const contextValue = { switchToSignup, switchToSignin , switchRecoverPassword};
 
   return (
     <AccountContext.Provider value={contextValue}>
@@ -145,10 +154,18 @@ export function AccountBox(props) {
               <SmallText>Por favor, regístrese para continuar.</SmallText>
             </HeaderContainer>
           )}
+           {active === "recuperar_contra" && (
+            <HeaderContainer>
+              <HeaderText>Recuperar</HeaderText>
+              <HeaderText>Contraseña</HeaderText>
+              <SmallText>Por favor, ingrese su correo.</SmallText>
+            </HeaderContainer>
+          )}
         </TopContainer>
         <InnerContainer>
           {active === "iniciar_sesion" && <LoginForm />}
           {active === "registrarse" && <SignupForm />}
+          {active === "recuperar_contra" && <RecoverPassword  />}
         </InnerContainer>
       </BoxContainer>
     </AccountContext.Provider>
