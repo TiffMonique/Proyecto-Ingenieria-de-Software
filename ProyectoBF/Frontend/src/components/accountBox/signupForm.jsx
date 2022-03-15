@@ -1,5 +1,5 @@
 import {  useFormik } from "formik";
-import React, { useContext} from "react";
+import React, { useContext, useState} from "react";
 import {
   BoldLink, //
   BoxContainer,
@@ -13,7 +13,8 @@ import {
 import { Marginer } from "../marginer";
 import { AccountContext } from "./accountContext";
 import * as yup from "yup";
-//import axios from "axios";
+import axios from "axios";
+import swal from "sweetalert"
 
 /*La contraseña debe tener al entre 8 y 16 caracteres,
 al menos un dígito, al menos una minúscula y al menos una mayúscula.*/
@@ -39,15 +40,55 @@ const validationSchema = yup.object({ // Un esquema de Yup es un objeto inmutabl
 });
 
 //Funcion para mandar los datos del form
-export function SignupForm(props) {
+/*export function SignupForm(props) {
   const { switchToSignin } = useContext(AccountContext);
   const onSubmit = (values) => {
-    alert(JSON.stringify(values)); //Aqui se puede cambiar dependiendo el alert que queramos poner
+    alert(JSON.stringify(values));
+    console("Hola"); //Aqui se puede cambiar dependiendo el alert que queramos poner
 };
+*/
+export function SignupForm(props) {
+  const { switchToSignin } = useContext(AccountContext);
+  const [ success,setSuccess] = useState(null);
+  const [ error,setError] = useState(null);
+
+  const onSubmit = async (values) => {
+    const { nombre, apellido, correo,telefono, direccion, pass } = values;
+    console.log(values);
+    const response = await axios
+      .post("http://localhost:4000/api/tienda/crear", {nombre:nombre, apellido:apellido, correo:correo, telefono:telefono, pass:pass, direccion:direccion})
+      .then(response => {swal({
+        title: "REGISTRO EXITOSO",
+        text: response?.data?.message,
+        icon: "success",
+        button: "Aceptar",
+        timer: "1500"
+
+    });formik.resetForm(); })
+      .catch((err) => {
+      //  console.log(response);
+        //if (err && err.response) setError(err.response.data.message);
+        console.log(err)
+          swal({
+            title: "HA OCURRIDO UN ERROR",
+            text: err.response.data.message,
+            icon: "error",
+            button: "Aceptar",
+            timer: "1500"
+        });
+      });
+
+    if (response && response.data) {
+      console.log("Hola")
+      setError(null);
+      setSuccess(response?.data?.message);
+        
+     
+    
+    }
+  };
 
 
-
-  
 // formik es una libreria que ayuda a validar campos
 const formik = useFormik({initialValues: {nombre: "", apellido: "", correo: "", telefono: "", direccion: "", pass: "", passConfirmation: ""},
   validateOnBlur: true,
@@ -55,28 +96,28 @@ const formik = useFormik({initialValues: {nombre: "", apellido: "", correo: "", 
   validationSchema: validationSchema,
 });
 
-console.log("Error: ", formik.errors);
+//sconsole.log("Error: ", formik.errors);
 
   return (
     <BoxContainer>
-      <FormContainer action="http://localhost:4000/api/tienda/crear" method="post">
+      <FormContainer onSubmit={formik.handleSubmit}>
         <FieldContainer>
           {/* onChange para sincronizar el valor del campo */}
           {/* onBlur para sincronizar la validación del campo */}
           <Input icon="user" type="text" name="nombre" id="nombre" placeholder="Nombre" value={formik.values.nombre} onChange={formik.handleChange} onBlur={formik.handleBlur}/>
           <FieldError>{formik.touched.nombre && formik.errors.nombre ? formik.errors.nombre: ""}</FieldError>
         </FieldContainer>
-        
+
         <FieldContainer>
           <Input type="text" name="apellido" id="apellido" placeholder="Apellido" value={formik.values.apellido} onChange={formik.handleChange} onBlur={formik.handleBlur}/>
           <FieldError>{formik.touched.apellido && formik.errors.apellido ? formik.errors.apellido: ""}</FieldError>
         </FieldContainer>
-        
+
         <FieldContainer>
           <Input type="email" name="correo" id="correo" placeholder="Correo" value={formik.values.correo} onChange={formik.handleChange} onBlur={formik.handleBlur}/>
           <FieldError>{formik.touched.correo && formik.errors.correo ? formik.errors.correo: ""}</FieldError>
         </FieldContainer>
-        
+
         <FieldContainer>
           <Input type="text" name="telefono" id="telefono" placeholder="Telefóno" value={formik.values.telefono} onChange={formik.handleChange} onBlur={formik.handleBlur}/>
           <FieldError>{formik.touched.telefono && formik.errors.telefono ? formik.errors.telefono: ""}</FieldError>
@@ -86,12 +127,12 @@ console.log("Error: ", formik.errors);
           <Input type="texto" name="direccion" id="direccion" placeholder="Dirección" value={formik.values.direccion} onChange={formik.handleChange} onBlur={formik.handleBlur}/>
           <FieldError>{formik.touched.direccion && formik.errors.direccion ? formik.errors.direccion: ""}</FieldError>
         </FieldContainer>
-        
+
         <FieldContainer>
           <Input type="password" name="pass" id="pass"  placeholder="Contraseña" value={formik.values.pass} onChange={formik.handleChange} onBlur={formik.handleBlur}/>
           <FieldError>{formik.touched.pass && formik.errors.pass? formik.errors.pass: ""}</FieldError>
         </FieldContainer>
-        
+
         <FieldContainer>
           <Input type="password" name="passConfirmation" placeholder="Confirmar Contraseña" value={formik.values.passConfirmation} onChange={formik.handleChange} onBlur={formik.handleBlur}/>
           <FieldError>{formik.touched.passConfirmation && formik.errors.passConfirmation ? formik.errors.passConfirmation: ""}</FieldError>
@@ -99,13 +140,13 @@ console.log("Error: ", formik.errors);
         <Marginer direction="vertical" margin={25} />
       <SubmitButton type="submit">Registrarse</SubmitButton>
       <Marginer direction="vertical" margin="1em" />
-        
+
       </FormContainer>
-      
+
       <MutedLink href="#">
       ¿Ya tienes una cuenta?
         <BoldLink href="#" onClick={switchToSignin}> {/*Al dar click redirecciona al login */}
-        
+
         Iniciar sesión
         </BoldLink>
       </MutedLink>

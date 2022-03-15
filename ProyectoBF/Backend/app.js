@@ -3,21 +3,28 @@ const express = require('express');
 const app = express();
 
 
+
+
 //3. LIBRERIA DOTENV
 const dotenv = require("dotenv");
-const res = require('express/lib/response');
+
 dotenv.config();
 
+//
+app.use(express.json());
 
+
+const routes = require('./routes/rutas');
 
 //configuracion del puerto
 const PORT = process.env.PORT || 4000
 
-
 //Rutas
-//app.use('/api/tienda', require('./routes/rutas.js'))
+app.use('/api/tienda', routes);
+
 
 app.listen(PORT, () => {
     console.log(`Listen on Port: ${PORT}`)
 })
+
 
