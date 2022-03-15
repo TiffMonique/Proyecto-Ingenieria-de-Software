@@ -4,6 +4,7 @@ const path = require('path');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const session = require('express-session');
 
 //configuracion
 // configurando el puerto
@@ -15,6 +16,15 @@ app.use(cors());
 
 
 // middlewares
+app.use(session({
+    secret: 'secretosssssss',
+    resave: true,
+    saveUninitialized: true
+}));
+
+
+
+
 // hace log de cada petición
 app.use(morgan('dev'));
 // hace que express entienda JSON
@@ -27,7 +37,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 //Rutas
 app.use('/api/tienda', require('./routes/rutas.js'));
-//app.use('/', require('./routes/autenticacion.js'));
+app.use('/api/tienda', require('./routes/autenticacion.js'));
 // Estáticos
 //no es necesario
 

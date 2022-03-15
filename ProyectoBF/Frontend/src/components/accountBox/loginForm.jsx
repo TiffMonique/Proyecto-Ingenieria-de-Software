@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
   BoldLink,
   BoxContainer,
@@ -13,6 +13,8 @@ import { Marginer } from "../marginer";
 import { AccountContext } from "./accountContext";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import axios from "axios";
+import swal from "sweetalert";
 
 //Validacion de campos vacios
 const validationSchema = yup.object({
@@ -25,12 +27,47 @@ const validationSchema = yup.object({
 export function LoginForm(props) {
   //Comunica los componentes para luego  pasar de login al registro
   const { switchToSignup } = useContext(AccountContext);
+  const [success, setSuccess] =useState(null);
+  const [error, setError] = useState(null);
 
   //controlador del formulario se activa cuando se envia el formulario
-  const onSubmit = (values)=>{
-    console.log(values);
+  
 
-  }
+  const onSubmit = async (values) => {
+    const { correo, pass } = values;
+    console.log(values);
+    const response = await axios
+      .post("http://localhost:4000/api/tienda/login", {correo: correo, pass: pass})
+      .then(response => {swal({
+        title: "LOGIN EXITOSO",
+        text: response?.data?.message,
+        icon: "success",
+        button: "Aceptar",
+        timer: "1500"
+
+    });formik.resetForm(); })
+      .catch((err) => {
+      //  console.log(response);
+        //if (err && err.response) setError(err.response.data.message);
+        console.log(err)
+          swal({
+            title: "HA OCURRIDO UN ERROR",
+            text: err.response.data.message,
+            icon: "error",
+            button: "Aceptar",
+            timer: "1500"
+        });
+      });
+
+    if (response && response.data) {
+      console.log("Hola")
+      setError(null);
+      setSuccess(response?.data?.message);
+        
+     
+    
+    }
+  };
 
   //Inicializa los valores del formulario, onsubmit envia la informacion al useFormik y se validan los campos con el validationSchema
   const formik = useFormik({initialValues :{correo: "", pass:""}, validateOnBlur: true, onSubmit, validationSchema: validationSchema});

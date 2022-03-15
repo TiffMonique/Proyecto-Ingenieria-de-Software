@@ -52,6 +52,7 @@ router.post('/crear', validacion.validate(validacion.createUsersValidation), asy
                     consulta = 'INSERT INTO Usuarios set ?';
                     pool.query(consulta, [nuevousuario], (err, respuesta) => {
                         if (err) {
+                            console.error(err);
                             res.status(409).json(
                                 {
                                     message: "no se pudo crear el usuario"

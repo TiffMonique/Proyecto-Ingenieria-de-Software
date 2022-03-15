@@ -3,5 +3,10 @@
     "Frontend": "cd Frontend && npm start",
     "Backend": "cd Backend && npm start",
     "dev": "concurrently \"npm run Frontend\" \"npm run Backend\""
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "concurrently": "^7.0.0",
+    "express-session": "^1.17.2"
   }
 }
