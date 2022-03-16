@@ -24,7 +24,7 @@ router.get('/', async (req, res) => {
 })
 
 //llamado a la función validate que contiene la función createUserValidation en el archivo validación 
-router.post('/crear', validacion.validate(validacion.createUsersValidation), async (req, res) => {
+router.post('/crear', async (req, res) => {
     const { nombre, apellido, correo, telefono, pass, direccion } = req.body;
     console.log("nombre", nombre);
     // validando el correo no repita
